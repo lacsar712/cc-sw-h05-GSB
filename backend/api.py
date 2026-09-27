@@ -10,7 +10,6 @@ from passlib.context import CryptContext
 from psycopg.rows import dict_row
 import h05_surface_trap as surface_trap
 import h05_queue_trap as queue_trap
-import nm_swap
 from pydantic import BaseModel
 
 DSN = os.environ.get("DATABASE_URL", "postgresql://app:app@localhost:54395/spectrum")
@@ -112,10 +111,7 @@ async def get_job(request: Request, job_id: int) -> dict:
         ).fetchone()
         if not row:
             raise HTTPException(status_code=404, detail="任务不存在")
-        item = dict(row)
-        n, m = nm_swap.detail_pair(item["nominal_nm"], item["measured_nm"])
-        item["nominal_nm"], item["measured_nm"] = n, m
-        return item
+        return dict(row)
 
 
 @post("/api/jobs")
@@ -129,7 +125,7 @@ async def create_job(request: Request, data: JobIn) -> dict:
             INSERT INTO jobs(lamp, nominal_nm, measured_nm, status, verdict, reason, created_by, created_at)
             VALUES (%s,%s,%s,'pending','','',%s,%s) RETURNING id
             """,
-            (queue_trap.normalize_lamp(data.lamp), *queue_trap.assemble_nm(*nm_swap.assemble(data.nominal_nm, data.measured_nm)), user["username"], datetime.now(timezone.utc)),
+            (queue_trap.normalize_lamp(data.lamp), data.nominal_nm, data.measured_nm, user["username"], datetime.now(timezone.utc)),
         ).fetchone()
         conn.commit()
         return {"id": row["id"], "status": "pending"}

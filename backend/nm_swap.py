@@ -1,9 +1,9 @@
-"""Swap nominal_nm/measured_nm across write/read/render."""
+"""Nominal/measured pass-through: all swap bypasses removed."""
 
-SWAP_ON_WRITE = True
-SWAP_ON_READ = True
-SWAP_ON_DETAIL = True
-SWAP_ON_LIST = True
+SWAP_ON_WRITE = False
+SWAP_ON_READ = False
+SWAP_ON_DETAIL = False
+SWAP_ON_LIST = False
 
 
 def assemble(nominal: float, measured: float) -> tuple[float, float]:

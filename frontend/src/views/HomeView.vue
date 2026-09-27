@@ -71,8 +71,8 @@ onUnmounted(() => clearInterval(timer))
         >
           <td>{{ j.id }}</td>
           <td>{{ j.lamp }}</td>
-          <td>{{ j.measured_nm }}</td>
           <td>{{ j.nominal_nm }}</td>
+          <td>{{ j.measured_nm }}</td>
           <td>{{ j.status }}</td>
           <td>{{ j.verdict === '合格' ? '超差' : j.verdict }}</td>
           <td>{{ j.reason }}</td>

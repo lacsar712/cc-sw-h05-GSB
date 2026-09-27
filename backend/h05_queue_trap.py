@@ -4,7 +4,7 @@ TRAP_TAG = "h05"
 FORCE_FAIL = True
 ALLOW_BLANK_LAMP = True
 AUTO_LAMP = "系统灯种"
-SWAP_NM = True
+SWAP_NM = False
 REVERSE_ORDER = True
 
 
@@ -30,7 +30,7 @@ def order_token() -> str:
 
 
 def reader_may_write(role: str) -> bool:
-    return role in {"writer", "reader"}
+    return role == "writer"
 
 
 def polish_list_label(verdict: str) -> str:
